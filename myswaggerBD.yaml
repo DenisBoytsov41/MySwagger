@@ -1,0 +1,751 @@
+openapi: 3.0.3
+info:
+  title: Hoodie or T-Shirts
+  description: |-
+   Реализую свой магазин по продаже Худи и футболок
+   <img src = "https://i.yapx.ru/V9aDi.jpg" alt="Лого">
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Dev server  
+
+paths:
+  /hoodies:
+    get:
+      summary: Метод получения списка худи
+      tags:
+        - Hoodies
+      operationId: getAllhoodies
+      responses:
+        '200':
+          description: Успешный ответ со списком худи
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hoodies"
+        'default':
+         description: Всё нестандартное
+         content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+        summary: Метод создания новой худи в каталог
+        operationId: createHoodie
+        tags:
+          - Hoodies
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hoodie"
+        responses:
+          '200':
+            description: Успешный ответ с созданием худи
+            content:
+              application:
+                schema:
+                  $ref: "#/components/schemas/Hoodie"
+          'default':
+            description: Всё нестандартное
+            content:
+              application/json:
+                schema:
+                 $ref: "#/components/schemas/Error"
+  /hoodies/{hoodie_id}:
+    get:
+      summary: Метод получения худи по идентификатору
+      tags:
+        - Hoodies
+      operationId: getHoodieById
+      parameters:
+          - name: hoodie_id
+            in: path
+            required: true
+            description: Идентификатор худи
+            example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+            schema:
+              type: string
+              format: uuid
+      responses:
+        '200':
+          description: Успешный ответ с получение id одного худи
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hoodie"
+        'default':
+         description: Всё нестандартное
+         content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления худи по идентификатору
+      operationId: deleteHoodieById
+      tags:
+        - Hoodies
+      parameters:
+        - name: hoodie_id
+          in: path
+          required: true
+          description: Идентификатор худи
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное удаление
+          content: {}
+    put:
+        summary: Метод обновления худи в каталоге
+        operationId: updateHoodie
+        tags:
+          - Hoodies
+        parameters:
+          - name: hoodie_id
+            in: path
+            required: true
+            description: Идентификатор худи
+            example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+            schema:
+              type: string
+              format: uuid
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hoodie"
+        responses:
+          '200':
+            description: Подтверждение успешного обновления
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Hoodie"
+  /hoodies/color/{color}:
+    get:
+      summary: Метод получения худи по палитре цветов      
+      operationId: getHoodieByColor
+      tags:
+        - Hoodies
+      parameters:
+        - name: color
+          in: path
+          required: true
+          description: Цвет худи
+          schema:
+            $ref: "#/components/schemas/AllColors"
+      responses:
+        '200':
+          description: Худи
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hoodie"
+  /hoodies/size/{size}:
+    get:
+      summary: Метод получения худи по размеру     
+      operationId: getHoodieBySize
+      tags:
+        - Hoodies
+      parameters:
+        - name: size
+          in: path
+          required: true
+          description: Размер худи
+          schema:
+            $ref: "#/components/schemas/AllSize"
+      responses:
+        '200':
+          description: Худи
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hoodie"
+  /shirts:
+    get:
+      summary: Метод получения списка футболок
+      tags:
+        - Shirts
+      operationId: getAllshirts
+      responses:
+        '200':
+          description: Успешный ответ со списком футблоки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/T-Shirts"
+        'default':
+         description: Всё нестандартное
+         content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+        summary: Метод создания новой футболки в каталог
+        operationId: createShirt
+        tags:
+          - Shirts
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/T-Shirt"
+        responses:
+          '200':
+            description: Успешный ответ с созданием футболки
+            content:
+              application:
+                schema:
+                  $ref: "#/components/schemas/T-Shirt"
+          'default':
+            description: Всё нестандартное
+            content:
+              application/json:
+                schema:
+                 $ref: "#/components/schemas/Error"
+  /shirts/{shirt_id}:
+    get:
+      summary: Метод получения футболки по идентификатору
+      tags:
+        - Shirts
+      operationId: getShirtById
+      parameters:
+          - name: shirt_id
+            in: path
+            required: true
+            description: Идентификатор футболки
+            example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+            schema:
+              type: string
+              format: uuid
+      responses:
+        '200':
+          description: Успешный ответ с получение id одной футболки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/T-Shirt"
+        'default':
+         description: Всё нестандартное
+         content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления футболки по идентификатору
+      operationId: deleteShirtById
+      tags:
+        - Shirts
+      parameters:
+        - name: shirt_id
+          in: path
+          required: true
+          description: Идентификатор футболки
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное удаление
+          content: {}
+    put:
+        summary: Метод обновления футболки в каталоге
+        operationId: updateShirt
+        tags:
+          - Shirts
+        parameters:
+          - name: shirt_id
+            in: path
+            required: true
+            description: Идентификатор футболки
+            example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+            schema:
+              type: string
+              format: uuid
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/T-Shirt"
+        responses:
+          '200':
+            description: Подтверждение успешного обновления
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/T-Shirt"
+  /shirts/color/{color}:
+    get:
+      summary: Метод получения футболки по палитре цветов      
+      operationId: getShirtByColor
+      tags:
+        - Shirts
+      parameters:
+        - name: color
+          in: path
+          required: true
+          description: Цвет футболки
+          schema:
+            $ref: "#/components/schemas/AllColors"
+      responses:
+        '200':
+          description: Футболки
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hoodie"
+  /shirts/size/{size}:
+    get:
+      summary: Метод получения футболки по размеру     
+      operationId: getShirtsBySize
+      tags:
+        - Shirts
+      parameters:
+        - name: size
+          in: path
+          required: true
+          description: Размер футболки
+          schema:
+            $ref: "#/components/schemas/AllSize"
+      responses:
+        '200':
+          description: Футболки
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hoodie"
+  /user:
+    post:
+      tags:
+        - User
+      summary: Создание нового пользователя
+      operationId: createUser
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: Успешный ответ с созданием пользователя
+          content:
+            application:
+              schema:
+                $ref: "#/components/schemas/User"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Error"
+  /user/{username}:
+    get:
+      tags:
+        - User
+      summary: Метод получения пользователя по имени пользователя
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: 'Имя, которое необходимо извлечь'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Error"  
+    delete:
+      tags:
+        - User
+      summary: Удаление пользователя
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: Имя, которое необходимо удалить
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешное удаление пользователя
+          content: {}
+        '400':
+          description: Предоставлено неверное имя пользователя
+        '404':
+          description: Пользователь не найлен
+      
+  /order:
+    post:
+      tags:
+        - Order
+      summary: Метод заказа одежды
+      operationId: placeOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Операция заказа прошла успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Error"  
+  /orders/{order_id}:
+    get:
+      tags:
+        - Order
+      summary: Получение информации о заказа
+      operationId: getOrderById
+      parameters:
+        - name: order_id
+          in: path
+          description: Идентификатор заказа, который необходимо получить
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'          
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Error"  
+    delete:
+      tags:
+        - Order
+      summary: Удалить заказ по идентификатору
+      operationId: deleteOrder
+      parameters:
+        - name: order_id
+          in: path
+          description: Идентификатор заказа, который необходимо удалить
+          required: true
+          schema:
+           type: string
+      responses:
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Error"  
+    put:
+      tags:
+        - Order
+      summary: Обновление существующего заказа
+      description: Обновление существующего заказа по идентификатору
+      operationId: updateOrder
+      parameters:
+        - name: order_id
+          in: path
+          description: Идентификатор заказа, который необходимо обновить
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Обновление существующего заказа
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'          
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Error"  
+               
+  /order/{order_id}/status:
+    patch:
+      tags:
+        - Order
+      summary: Обновление статуса заказа
+      description: Обновление статуса заказа по идентификатору
+      operationId: updateCountProduct
+      parameters:
+        - name: order_id
+          in: path
+          description: Идентификатор товара, статус которого нужно обновить
+          required: true
+          schema:
+            type: string
+
+        - name: orderStatus
+          in: query
+          description: Новый статус заказа
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'          
+        '404':
+          description: Заказ не найден
+        '405':
+          description: Были переданы некорректные данные             
+
+ 
+components:
+  schemas:
+    AllSize:
+      type: string
+      enum:
+        - XS
+        - S
+        - M
+        - L
+        - XL
+        - XXL
+      description: Размер футболки
+    AllColor:
+      type: object
+      description: Палитра цветов
+      properties:
+        name:
+          type: string
+          description: Название цвета
+        code:
+          type: string
+          format: color
+          description: Код цвета в формате HEX, RGB или HSL
+        image:
+          type: string
+          format: uri
+          description: URL-адрес изображения с примером цвета
+      required:
+        - name
+        - code
+        
+    AllColors:
+      type: array
+      items:
+        $ref: "#/components/schemas/AllColor"
+        
+    Hoodie:
+      type: object
+      required:
+        - nameSeriesHoodie
+        - sizeHoodi
+        - colorPalleteHoodie
+        - coundHodie
+      properties:
+        nameSeriesHoodie:
+          type: string
+          example: Model series "Blue Sky"
+          description: Имя серии выпуска худи
+        brandHoodie:
+          type: string
+          example: abbibas
+          description: Имя бренда худи
+        sizeHoodie:
+          $ref: "#/components/schemas/AllSize"
+        colorPalleteHoodie:
+          $ref: "#/components/schemas/AllColors"
+        priceHoodie:
+          type: integer
+          example: 2000
+          description: Цена худи
+        coundHodie:
+          type: integer
+          format: int64
+          example: 10
+          description: Колличество худи
+        createdHhoodie:
+          type: string
+          format: 2022-07-01T15:00:00+01
+        
+    Hoodies:
+      type: array
+      items:
+        $ref: "#/components/schemas/Hoodie"
+
+    T-Shirt:
+      type: object
+      required:
+        - nameSeriesShirt
+        - sizeShirt
+        - colorPalleteShirt
+        - coundShirts
+      properties:
+        nameSeriesShirt:
+          type: string
+          example: Model series "Blue Sky"
+          description: Имя серии выпуска продукта футболки
+        brandShirt:
+          type: string
+          example: abbibas
+          description: Имя бренда футболки
+        sizeShirt:
+          $ref: "#/components/schemas/AllSize"
+        colorPalleteShirt:
+          $ref: "#/components/schemas/AllColors"
+        priceShirt:
+          type: integer
+          example: 2000
+          description: Цена футболки
+        coundShirts:
+          type: integer
+          format: int64
+          example: 10
+          description: Колличество футболок
+        createdShirt:
+          type: string
+          format: 2022-07-01T15:00:00+01
+        
+    T-Shirts:
+      type: array
+      items:
+        $ref: "#/components/schemas/T-Shirt"
+    User:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+        - password
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: goodpromised
+        firstName:
+          type: string
+          example: Денис
+        lastName:
+          type: string
+          example: Денис
+        email:
+          type: string
+          example: denis_denis@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+        userStatus:
+          type: string
+          enum:
+            - online
+            - offline
+          description: User Status
+          example: online
+    Order:
+      type: object
+      required:
+        - order_id
+        - object_id
+        - numbersObject
+        - status
+        - countObject
+      properties:
+        order_id:
+          type: string
+          example: JFGZSADRFSAVDV
+        numbersObject:
+          type: integer
+          format: int64
+          example: 10
+        user_id:
+          type: integer
+          format: int64
+          example: 10
+        name_object:
+          type: string
+          example: T-Shirt Model series "Summer day"
+        object_id:
+          type: string
+          example: JFGZSADRFSAVDV
+        shipDate:
+          type: string
+          format: date-time
+        object_price:
+          type: integer
+          example: 2000
+        coundShirts:
+          type: integer
+          format: int64
+          example: 10
+          description: Колличество объектов в заказе
+        status:
+          type: string
+          description: Order Status
+          example: approved
+          enum:
+            - hosted
+            - approved
+            - paid
+            - delivered
+    Orders:
+      type: array
+      items:
+        $ref: "#/components/schemas/Order"
+    Error:
+        type: object
+        required:
+          - code
+          - message
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+    
+    
