@@ -690,7 +690,6 @@ components:
     Order:
       type: object
       required:
-        - order_id
         - object_id
         - numbersObject
         - status
