@@ -446,44 +446,44 @@ components:
       type: object
       required:
         - cloth_id
-        - nameSeries
-        - size
-        - colorPallete
-        - category
-        - count
+        - nameSeriesCloth
+        - sizeCloth
+        - colorPalleteCloth
+        - categoryCloth
+        - countCloth
       properties:
         cloth_id:
           type: string
           example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
           format: uuid
           description: id одежды
-        nameSeriesShirt:
+        nameSeriesCloth:
           type: string
           example: Model series "Blue Sky"
           description: Имя серии выпуска продукта футболки
-        brandShirt:
+        brandCloth:
           type: string
           example: abbibas
           description: Имя бренда футболки
-        sizeShirt:
+        sizeCloth:
           $ref: "#/components/schemas/AllSize"
-        colorPalleteShirt:
+        colorPalleteCloth:
           $ref: "#/components/schemas/AllColors"
-        priceShirt:
+        priceCloth:
           type: integer
           example: 2000
           description: Цена футболки
-        coundShirts:
+        countCloth:
           type: integer
           format: int64
           example: 10
           description: Колличество футболок
-        category:
+        categoryCloth:
           type: string
           enum: 
             - Hoodie
             - Shirt
-        createdShirt:
+        createdCloth:
           type: string
           format: 2022-07-01T15:00:00+01
           
@@ -503,9 +503,9 @@ components:
         - email
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
+          type: string
+          format: uuid
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
         username:
           type: string
           example: goodpromised
@@ -517,6 +517,7 @@ components:
           example: Денис
         email:
           type: string
+          format: email
           example: denis_denis@email.com
         password:
           type: string
@@ -531,51 +532,75 @@ components:
             - offline
           description: User Status
           example: online
+          
     Order:
       type: object
       required:
-        - numbersObject
-        - countObject
+        - customer
+        - items
+        - total_price
+        - status
       properties:
         order_id:
           type: string
           format: uuid
-          example: 56hfdd2b-8b9c-4af9-44f7-0bc180cf74b4
-        numbersCategory:
-          type: integer
-          format: int64
-          example: 10
-        user_id:
-          type: integer
-          format: int64
-          example: 10
-        name_object:
-          type: string
-          example: T-Shirt Model series "Summer day"
-        object_id:
-          type: string
-          format: uuid
-          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+          description: Уникальный идентификатор заказа
         shipDate:
           type: string
           format: date-time
-        object_price:
-          type: integer
-          example: 2000
-        coundShirts:
-          type: integer
-          format: int64
-          example: 10
-          description: Колличество объектов в заказе
+        customer:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Уникальный идентификатор покупателя
+            name:
+              type: string
+              example: Денис
+              description: Имя покупателя
+            email:
+              type: string
+              format: email
+              example: denis_denis@email.com
+              description: Электронная почта покупателя
+        items:
+          type: array
+          description: Список товаров в заказе
+          items:
+            type: object
+            properties:
+              object_id:
+                type: string
+                format: uuid
+                example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+              name_object:
+                type: string
+                example: T-Shirt Model series "Summer day"
+                description: Название товара
+              price:
+                type: number
+                format: float
+                example: 2000
+                description: Цена товара
+              quantity:
+                type: integer
+                example: 2
+                description: Количество товара
+        total_price:
+          type: number
+          format: float
+          example: 4000
+          description: Общая стоимость заказа
         status:
           type: string
-          description: Order Status
-          example: approved
+          description: Статус заказа
           enum:
-            - hosted
-            - approved
-            - paid
+            - pending
+            - processing
+            - shipped
             - delivered
+            - canceled
     Orders:
       type: array
       items:
