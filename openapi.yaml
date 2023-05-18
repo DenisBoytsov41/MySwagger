@@ -454,6 +454,7 @@ components:
       properties:
         cloth_id:
           type: string
+          readOnly: true
           example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
           format: uuid
           description: id одежды
@@ -505,6 +506,7 @@ components:
         id:
           type: string
           format: uuid
+          readOnly: true
           example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
         username:
           type: string
@@ -544,6 +546,7 @@ components:
         order_id:
           type: string
           format: uuid
+          readOnly: true
           description: Уникальный идентификатор заказа
         shipDate:
           type: string
